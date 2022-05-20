@@ -11,7 +11,8 @@ const schema = {
     'KEY_DICTIONARY',
     'KEY_LENGTH',
     'HASH_SALT',
-    'LOG_EXPIRE_TIME'
+    'LOG_EXPIRE_TIME',
+    'ANYALOG_SERVE_STATIC_FILES'
   ],
   properties: {
     APP_NAME: {
@@ -42,7 +43,11 @@ const schema = {
     LOG_EXPIRE_TIME: {
       type: 'integer',
       default: 600
-    }
+    },
+    ANYALOG_SERVE_STATIC_FILES: {
+      type: 'boolean',
+      default: false
+    },
   }
 };
 

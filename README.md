@@ -18,14 +18,20 @@ Configuration is done via an .env file placed in the project root.
 
 
 ### Setup
-Create database
+#### Create database
 ```
 yarn run create-db
 ```
 
-Run `yarn run clear-logs` via a cronjob or similar every minute to clear expired logs.
+#### Set up delete job
+Run `yarn run clear-logs` via a every minute to clear expired logs.
+Crontab example:
+```
+* * * * * yarn --cwd=/path/to/anya-log run clear-logs
+```
 
-Serve static files
+#### Serve static files
+Via web server (recommended)
 ```
 server {
 	listen		127.0.0.1:80;
@@ -59,4 +65,10 @@ server {
 		proxy_pass http://127.0.0.1:14025;
 	}
 }
+```
+
+Via node process (if you absolutely have to)
+Set this env variable:
+```
+ANYALOG_SERVE_STATIC_FILES=true
 ```

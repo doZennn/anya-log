@@ -106,6 +106,7 @@ const getLog = async (logKey) => {
     const decryptedBuffer = await window.crypto.subtle.decrypt({ name: 'AES-CBC', iv, }, key, archiveBuffer);
     return decryptedBuffer;
   } catch (error) {
+    console.error(error);
     throw new Error('Error decrypting log archive.');
   }
 };

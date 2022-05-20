@@ -19,6 +19,7 @@
     "@fastify/multipart": "^6.0.0",
     "@fastify/rate-limit": "^6.0.0",
     "@fastify/sensible": "^4.0.0",
+    "@fastify/static": "^5.0.2",
     "argon2": "^0.28.5",
     "better-sqlite3": "^7.5.3",
     "ejs": "^3.1.8",

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title><%= appName %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://unpkg.com/modern-normalize@1.1.0/modern-normalize.css" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <form id="search-log" method="post" autocomplete="off">
+    <input type="text" name="log_id" value="" placeholder="Enter key..." />
+    <button type="submit">➜</button>
+  </form>
+  <button id="download-all" type="button" hidden>Download Tarball 🡇</button>
+  <div id="error-box"></div>
+  <div id="files-container"></div>
+
+  <template id="fileblock">
+    <div class="file">
+      <div class="file-toolbar">
+        <button type="button" class="collapse"> </button>
+        <span class="filename"></span>
+        <span class="linecount"></span>
+        <span class="toolbar-right">
+          <span class="filesize"></span>
+          <button class="download" type="button">Download 🡇</button>
+        </span>
+      </div>
+      <ol class="file-contents"></ol>
+    </div>
+  </template>
+
+  <template id="logline">
+    <li><pre><code></code></pre></li>
+  </template>
+  <script type="module" src="/anyalog.js"></script>
+</body>
+</html>

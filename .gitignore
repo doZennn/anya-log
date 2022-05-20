@@ -1,0 +1,11 @@
+node_modules
+yarn-error.log
+storage
+.vscode
+.env
+.db
+anyalog.db
+anyalog.db-journal
+tmp/*
+public/log/*
+!.gitkeep

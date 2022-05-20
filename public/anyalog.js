@@ -1,29 +1,8 @@
 /* eslint-disable no-unused-vars */
-import 'https://cdn.skypack.dev/pin/@stardazed/streams-polyfill@v2.4.0-rGaekSLyjXRF7WfO54dC/mode=imports/optimized/@stardazed/streams-polyfill.js';
+import { gunzipSync } from 'https://cdn.skypack.dev/pin/fflate@v0.7.3-x0OS7MYd1pAJyCyfqyxe/mode=imports,min/optimized/fflate.js';
 import untar from 'https://cdn.skypack.dev/pin/js-untar-lhc@v2.1.1-L7n4ZX1UhO8CDpqnZH1i/mode=imports,min/optimized/js-untar-lhc.js';
-import {isBinary} from 'https://cdn.skypack.dev/pin/istextorbinary@v6.0.0-rcru39eisf9dWFZW71DP/mode=imports,min/optimized/istextorbinary.js';
+import { isBinary } from 'https://cdn.skypack.dev/pin/istextorbinary@v6.0.0-rcru39eisf9dWFZW71DP/mode=imports,min/optimized/istextorbinary.js';
 
-/*
-  Polyfill file blob streaming
-  https://github.com/stardazed/sd-streams/issues/8
-*/
-class PatchableReadableStream extends ReadableStream {
-  constructor (reader) {
-    super({
-      async start(controller) {
-        // eslint-disable-next-line no-constant-condition
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          controller.enqueue(value);
-        }
-        controller.close();
-        reader.releaseLock();
-      }
-    });
-  }
-}
-  
 const downloadURL = (data, fileName) => {
   const a = document.createElement('a');
   a.href = data;
@@ -110,21 +89,6 @@ const getLog = async (logKey) => {
     throw new Error('Error decrypting log archive.');
   }
 };
-  
-const ungzip = async (archiveBuffer) => {
-  const archiveStream = new Blob([archiveBuffer], { type: 'application/octet-stream' });
-  const decompressor = new window.DecompressionStream('gzip');
-  
-  let deStream;
-  if (typeof new Blob().stream().pipeThrough !== 'function') {
-    const readableStream = new PatchableReadableStream(archiveStream.stream().getReader());
-    deStream = readableStream.pipeThrough(decompressor);
-  } else {
-    deStream = archiveStream.stream().pipeThrough(decompressor);
-  }
-  const deBlob = await new Response(deStream).blob();
-  return deBlob;
-};
 
 (async () => {
   let currentTarball;
@@ -139,9 +103,10 @@ const ungzip = async (archiveBuffer) => {
   const fileblockTpl = document.querySelector('#fileblock');
   const lineTpl = document.querySelector('#logline');
 
-  const handleDownload = (blob, name) => {
-    const url = window.URL.createObjectURL(blob);
-    downloadURL(url, name);
+  const handleDownload = () => {
+    if (!currentTarball) return;
+    const url = window.URL.createObjectURL(currentTarball);
+    downloadURL(url, 'logs.tar');
     setTimeout(() => window.URL.revokeObjectURL(url), 1000);
   };
 
@@ -188,19 +153,20 @@ const ungzip = async (archiveBuffer) => {
     const fd = new FormData(evt.target); 
     const logKey = fd.get('log_id').trim().toLocaleUpperCase();
     try {
-      const gzip = await getLog(logKey);
-      const tarball = await ungzip(gzip);
-      const files = await untar(await tarball.arrayBuffer());
+      const gzipp = await getLog(logKey);
+      const tarball = gunzipSync(new Uint8Array(gzipp));
+      currentTarball = new Blob([tarball]); // save blob clone to var
+
+      const files = await untar(tarball.buffer);
       downloadAll.removeAttribute('hidden');
       history.replaceState(null, '', `#!${logKey}`);
-      currentTarball = tarball;
       renderFiles(files);
     } catch (error) {
       errorBox.innerText = error.message;
       errorBox.removeAttribute('hidden');
     }
   };
-  downloadAll.addEventListener('click', () => handleDownload(currentTarball, 'logs.tar'), false);
+  downloadAll.addEventListener('click', handleDownload, false);
   document.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('collapse')) return;
     evt.target.closest('.file').classList.toggle('collapsed');

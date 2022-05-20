@@ -5,7 +5,7 @@ const hashKey = require('../../lib/hash-key');
 module.exports = async function (fastify) {
   // Rate limit log deletes
   fastify.register(require('@fastify/rate-limit'), {
-    max: 8,
+    max: 5,
     timeWindow: '1 minute'
   });
 

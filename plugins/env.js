@@ -12,7 +12,8 @@ const schema = {
     'KEY_LENGTH',
     'HASH_SALT',
     'LOG_EXPIRE_TIME',
-    'ANYALOG_SERVE_STATIC_FILES'
+    'ANYALOG_SERVE_STATIC_FILES',
+    'ANYALOG_USE_BUILTIN_CRON'
   ],
   properties: {
     APP_NAME: {
@@ -45,6 +46,10 @@ const schema = {
       default: 600
     },
     ANYALOG_SERVE_STATIC_FILES: {
+      type: 'boolean',
+      default: false
+    },
+    ANYALOG_USE_BUILTIN_CRON: {
       type: 'boolean',
       default: false
     },

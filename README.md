@@ -23,13 +23,6 @@ Configuration is done via an .env file placed in the project root.
 yarn run create-db
 ```
 
-#### Set up delete job
-Run `yarn run clear-logs` via a every minute to clear expired logs.
-Crontab example:
-```
-* * * * * yarn --cwd=/path/to/anya-log run clear-logs
-```
-
 #### Serve static files
 Via web server (recommended)
 ```
@@ -71,4 +64,16 @@ Via node process (if you absolutely have to)
 Set this env variable:
 ```
 ANYALOG_SERVE_STATIC_FILES=true
+```
+
+#### Set up delete job
+Run `yarn run clear-logs` via a every minute to clear expired logs.
+Crontab example:
+```
+* * * * * yarn --cwd=/path/to/anya-log run clear-logs
+```
+
+Via node (again, only if you really need to):
+```
+ANYALOG_USE_BUILTIN_CRON=true
 ```

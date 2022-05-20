@@ -11,13 +11,16 @@ const hashKey = require('../../lib/hash-key');
 const { encrypt } = require('../../lib/crypt-log');
 
 
-async function saveRequestFiles(req, options) {
+async function saveRequestFiles(req, reply, options) {
   const requestFiles = [];
   const tmpdir = options.tmpdir;
   await fs.mkdir(tmpdir);
 
   const files = await req.files(options);
   for await (const file of files) {
+    if (!file.filename) {
+      return reply.code(400).send(new Error('File does not have a file name.'));
+    }
     const filepath = joinPath(tmpdir, file.filename);
     const target = createWriteStream(filepath);
     try {
@@ -57,7 +60,7 @@ module.exports = async function (fastify) {
     };
 
     try {
-      const files = await saveRequestFiles(req, options);
+      const files = await saveRequestFiles(req, reply, options);
       if (files.length === 0) {
         return reply.code(400).send(new Error('Upload at least one log file.'));
       }

@@ -9,20 +9,22 @@ module.exports = fp(async function (fastify) {
     fastify.register(require('@fastify/static'), {
       root: path.resolve('public'),
       prefix: '/',
-      index: false
+      index: false,
+      decorateReply: false,
+      dotfiles: 'ignore',
     });
 
     fastify.get('/log/:file', function (req, reply) {
       if (!/^[\da-f]{64}\.tar\.gz$/.test(req.params.file)) {
         return reply.callNotFound();
       }
-      const filePath = `log/${req.params.file.substring(0, 2)}/${req.params.file.substring(2, 4)}/${req.params.file}`;
-      if (!fs.existsSync(path.resolve('public', filePath))) {
+      const filePath = path.resolve('public', `log/${req.params.file.substring(0, 2)}/${req.params.file.substring(2, 4)}/${req.params.file}`);
+      if (!fs.existsSync(filePath)) {
         return reply.callNotFound();
       }
-
-      reply.download(filePath);
-      return reply.send(); // workaround for ERR_STREAM_PREMATURE_CLOSE https://github.com/fastify/fastify-static/issues/116
+      fs.readFile(filePath, (err, fileBuffer) => {
+        reply.send(err || fileBuffer);
+      });
     });
   }
 }, {

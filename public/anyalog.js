@@ -103,10 +103,9 @@ const getLog = async (logKey) => {
   const fileblockTpl = document.querySelector('#fileblock');
   const lineTpl = document.querySelector('#logline');
 
-  const handleDownload = () => {
-    if (!currentTarball) return;
-    const url = window.URL.createObjectURL(currentTarball);
-    downloadURL(url, 'logs.tar');
+  const handleDownload = (blob, name) => {
+    const url = window.URL.createObjectURL(blob);
+    downloadURL(url, name);
     setTimeout(() => window.URL.revokeObjectURL(url), 1000);
   };
 
@@ -170,7 +169,7 @@ const getLog = async (logKey) => {
       errorBox.removeAttribute('hidden');
     }
   };
-  downloadAll.addEventListener('click', handleDownload, false);
+  downloadAll.addEventListener('click', () => handleDownload(currentTarball, 'logs.tar'), false);
   document.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('collapse')) return;
     evt.target.closest('.file').classList.toggle('collapsed');

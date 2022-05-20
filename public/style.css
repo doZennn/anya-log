@@ -76,6 +76,15 @@ body {
   opacity: 1;
 }
 
+#search-log > button::after {
+  display: inline-block;
+  vertical-align: text-top;
+  content: '➜';
+}
+#search-log.loading > button::after {
+  content: '⭘︎';
+}
+
 #download-all {
   display: block;
   margin: 1.5em auto;

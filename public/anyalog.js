@@ -47,13 +47,20 @@ const humanFileSize = (bytes, si = false, dp = 1) => {
   return bytes.toFixed(dp) + ' ' + units[u];
 };
 
+let logAbortController = new AbortController();
+
 const getLog = async (logKey) => {
   const isDeleteKey = logKey.includes(':');
+
+  logAbortController.abort();
+  logAbortController = new AbortController();
+  const { signal } = logAbortController;
 
   // Most reverse proxies log GET by default, so just send key in the POST body
   const response = await fetch(isDeleteKey ? '/logs' : '/logs/getlog', {
     method: isDeleteKey ? 'delete' : 'post',
     body: logKey,
+    signal,
     headers: {
       'Content-Type': 'text/plain'
     }
@@ -74,7 +81,7 @@ const getLog = async (logKey) => {
   }
   const { iv: ivHex, path, hash } = resJson;
   
-  const getArchiveFile = await fetch(path);
+  const getArchiveFile = await fetch(path, { signal });
   const archiveBuffer = await getArchiveFile.arrayBuffer();
   
   const rawKey = fromHex(hash);
@@ -150,9 +157,12 @@ const getLog = async (logKey) => {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
+
     downloadAll.setAttribute('hidden', true);
     filesContainer.innerHTML = '';
     errorBox.setAttribute('hidden', true);
+    searchForm.classList.add('loading');
+
     const fd = new FormData(evt.target); 
     const logKey = fd.get('log_id').trim().toLocaleUpperCase();
     try {
@@ -161,11 +171,14 @@ const getLog = async (logKey) => {
       currentTarball = new Blob([tarball]); // save blob clone to var
 
       const files = await untar(tarball.buffer);
-      downloadAll.removeAttribute('hidden');
       history.replaceState(null, '', `#!${logKey}`);
       renderFiles(files);
     } catch (error) {
-      errorBox.innerText = error.message;
+      if (error.name !== 'AbortError') {
+        errorBox.innerText = error.message;
+      }
+    } finally {
+      searchForm.classList.remove('loading');
       errorBox.removeAttribute('hidden');
     }
   };

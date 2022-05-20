@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title><%= appName %></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no, user-scalable=no">
   <link rel="stylesheet" href="https://unpkg.com/modern-normalize@1.1.0/modern-normalize.css" />
-  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/style.css?<%= styleHash %>" />
 </head>
 <body>
   <form id="search-log" method="post" autocomplete="off">
@@ -35,6 +35,6 @@
   <template id="logline">
     <li><pre><code></code></pre></li>
   </template>
-  <script type="module" src="/anyalog.js"></script>
+  <script type="module" src="/anyalog.js?<%= scriptHash %>"></script>
 </body>
 </html>

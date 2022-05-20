@@ -119,10 +119,19 @@ const getLog = async (logKey) => {
       // Create file block
       const fileBlockEl = fileblockTpl.content.cloneNode(true);
 
+      const possibleBinary = isBinary(file.name, file.buffer);
+      const lineCount = lines.length;
+
+      // Collapse if really long, binary, or large file size
+      if (lineCount > 500 || possibleBinary || file.buffer.byteLength > (1024 * 1024)) {
+        fileBlockEl.querySelector('.file').classList.add('collapsed');
+      }
+
       // fill file info
       const toolbar = fileBlockEl.querySelector('.file-toolbar');
       toolbar.querySelector('.filename').textContent = file.name;
-      toolbar.querySelector('.linecount').textContent = `(${lines.length.toLocaleString()} line${lines.length === 1 ? '' : 's'})`;
+      toolbar.querySelector('.linecount').textContent =
+        `(${lineCount.toLocaleString()} line${lineCount === 1 ? '' : 's'}${possibleBinary ? ', possibly binary' : ''})`;
       toolbar.querySelector('.filesize').textContent = humanFileSize(file.buffer.byteLength, true, 2);
       toolbar.querySelector('.filesize').title = `${file.buffer.byteLength.toLocaleString()} bytes`;
       toolbar.querySelector('.download').addEventListener('click', () => handleDownload(file.blob, file.name), false);
@@ -135,11 +144,6 @@ const getLog = async (logKey) => {
         lineEl.querySelector('code').textContent = line;
         ol.appendChild(lineEl);
       });
-
-      // Collapse if really long, binary, or large file size
-      if (lines.length > 500 || isBinary(file.name, file.buffer) || file.buffer.byteLength > (1024 * 1024)) {
-        fileBlockEl.querySelector('.file').classList.add('collapsed');
-      }
 
       filesContainer.appendChild(fileBlockEl);
     }

@@ -7,7 +7,7 @@
   "author": "Jozen Blue Martinez <me@jozen.blue>",
   "license": "MIT",
   "scripts": {
-    "start": "fastify start -l info app.js",
+    "start": "yarn run create-db && fastify start -l info app.js",
     "create-db": "node create-db.js",
     "clear-logs": "node clear-stale-logs.js",
     "dev": "fastify start --watch --verbose-watch --ignore-watch=\"public tmp anyalog.db anyalog.db-journal\" --log-level info --pretty-logs app.js",

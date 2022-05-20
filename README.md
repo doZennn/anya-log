@@ -1,30 +1,29 @@
 # AnyaLog
 Simple and secure key based log upload and retrieval.
 
-AnyaLog is designed to keep user logs as secure as possible. You cannot view uploaded logs without the key that is sent to the user upon upload.  
-Ensure you aren't storing the key on accident (POST request logging, for example).
+AnyaLog is designed to keep user logs as secure as possible. You cannot view the uploaded logs without the key that is sent to the user upon upload. Even with access to the database and stored files. Make sure you aren't storing the key on accident (POST request logging, for example).
 
-### Config
-Configuration is done via an .env file placed in the project root.  
+## Config
+Configuration is done via environment variables. You can also place an .env in the root and it will be read.
 
-| Key               | Description                                                                                    | Default    |
-| ----------------- | ---------------------------------------------------------------------------------------------- | ---------- |
-| HASH_SALT         | HEX encoded salt, 512 bytes long.                                                              |            |
-| PORT              | Port for web server to run on                                                                  | 3000       |
-| APP_NAME          | Name of the website front-end.                                                                 | AnyaLog    |
-| KEY_LENGTH        | Length of key generated for user. Longer is more secure but may be harder for the user to use. | 4          |
-| KEY_DICTIONARY    | Characters used to generate key. Must not contain ":".                                         | ABCDE12345 |
-| LOG_EXPIRE_TIME   | Time in seconds for when log files should automatically be deleted.                            | 600        |
+| Key               | Description                                                                                    | Default                      |
+| ----------------- | ---------------------------------------------------------------------------------------------- | ---------------------------- |
+| HASH_SALT         | HEX encoded salt, 512 bytes long.                                                              |                              |
+| PORT              | Port for web server to run on                                                                  | 3000                         |
+| APP_NAME          | Name of the website front-end.                                                                 | AnyaLog                      |
+| KEY_LENGTH        | Length of key generated for user. Longer is more secure but may be harder for the user to use. | 4                            |
+| KEY_DICTIONARY    | Characters used to generate key. Must not contain ":".                                         | 346789ABCDEFGHJKLMNPQRTUVWXY |
+| LOG_EXPIRE_TIME   | Time in seconds for when log files should automatically be deleted.                            | 600                          |
 
 
-### Setup
-#### Create database
+## Setup
 ```
+yarn install
 yarn run create-db
 ```
 
-#### Serve static files
-Via web server (recommended)
+### Serve static files
+##### Via web server (recommended)
 ```
 server {
 	listen		127.0.0.1:80;
@@ -55,25 +54,30 @@ server {
 		proxy_set_header X-Real-IP $remote_addr;
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_set_header X-Forwarded-Proto $scheme;
-		proxy_pass http://127.0.0.1:14025;
+		proxy_pass http://127.0.0.1:3000;
 	}
 }
 ```
 
-Via node process (if you absolutely have to)
+##### Via node process (if you absolutely have to)  
 Set this env variable:
 ```
 ANYALOG_SERVE_STATIC_FILES=true
 ```
 
-#### Set up delete job
-Run `yarn run clear-logs` via a every minute to clear expired logs.
-Crontab example:
+### Set up delete job
+Run `yarn run clear-logs` via a every minute to clear expired logs.  
+##### Crontab:
 ```
 * * * * * yarn --cwd=/path/to/anya-log run clear-logs
 ```
 
-Via node (again, only if you really need to):
+##### Via node (again, only if you really need to):
 ```
 ANYALOG_USE_BUILTIN_CRON=true
+```
+
+### Start!
+```
+yarn run start
 ```

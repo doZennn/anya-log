@@ -173,13 +173,14 @@ const getLog = async (logKey) => {
       const files = await untar(tarball.buffer);
       history.replaceState(null, '', `#!${logKey}`);
       renderFiles(files);
+      downloadAll.removeAttribute('hidden');
+      searchForm.classList.remove('loading');
     } catch (error) {
       if (error.name !== 'AbortError') {
+        searchForm.classList.remove('loading');
         errorBox.innerText = error.message;
+        errorBox.removeAttribute('hidden');
       }
-    } finally {
-      searchForm.classList.remove('loading');
-      errorBox.removeAttribute('hidden');
     }
   };
   downloadAll.addEventListener('click', () => handleDownload(currentTarball, 'logs.tar'), false);

@@ -14,6 +14,8 @@ Configuration is done via environment variables. You can also place an .env in t
 | KEY_LENGTH        | Length of key generated for user. Longer is more secure but may be harder for the user to use. | 4                            |
 | KEY_DICTIONARY    | Characters used to generate key. Must not contain ":".                                         | 346789ABCDEFGHJKLMNPQRTUVWXY |
 | LOG_EXPIRE_TIME   | Time in seconds for when log files should automatically be deleted.                            | 600                          |
+| MAX_FILES         | Maximum individual files per log.                                                              | 20                           |
+| MAX_FILES_SIZE    | Max total log size in bytes.                                                                   | 5000000                      |
 
 
 ## Setup

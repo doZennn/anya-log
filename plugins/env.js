@@ -7,7 +7,8 @@ const schema = {
   required: [
     'APP_NAME',
     'MAX_LOGS_MINUTE',
-    'MAX_SIZE_LOGS',
+    'MAX_FILES',
+    'MAX_FILES_SIZE',
     'KEY_DICTIONARY',
     'KEY_LENGTH',
     'HASH_SALT',
@@ -27,9 +28,13 @@ const schema = {
       type: 'integer',
       default: 10
     },
-    MAX_SIZE_LOGS: {
+    MAX_FILES_SIZE: {
       type: 'integer',
       default: 5 * 1000000
+    },
+    MAX_FILES: {
+      type: 'integer',
+      default: 20
     },
     KEY_DICTIONARY: {
       type: 'string',

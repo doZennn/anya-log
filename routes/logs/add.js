@@ -53,8 +53,8 @@ module.exports = async function (fastify) {
         fieldNameSize: 100, // Max field name size in bytes
         fieldSize: 100, // Max field value size in bytes
         fields: 0, // Don't allow non-files
-        fileSize: fastify.config.MAX_SIZE_LOGS, // Max total size
-        files: 8, // Max number of log files
+        fileSize: fastify.config.MAX_FILES_SIZE, // Max total size
+        files: fastify.config.MAX_FILES, // Max number of log files
         headerPairs: 2000 // Max number of header key=>value pairs
       }
     };

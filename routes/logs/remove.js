@@ -29,12 +29,11 @@ module.exports = async function (fastify) {
       return reply.code(404).send(new Error('Invalid delete key.'));
     }
 
-    // Mark as "deleted" and change date, let cron do the actual deleting
+    // Change expire date to current time, let cron do the actual deleting
     await fastify.db.prepare(`
       UPDATE logs
       SET
-        expires = DATETIME(),
-        deleted = 1
+        expires = DATETIME()
       WHERE
         id = ?
         AND delkey = ?

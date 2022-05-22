@@ -1,7 +1,7 @@
 # AnyaLog
 Simple and secure key based log upload and retrieval.
 
-AnyaLog is designed to keep user logs as secure as possible. You cannot view the uploaded logs without the key that is sent to the user upon upload. Even with access to the database and stored files. Make sure you aren't storing the key on accident (POST request logging, for example).
+AnyaLog is designed to keep user logs as secure as possible. You cannot view the uploaded logs without the key that is sent to the user upon upload. Even with access to the database and stored files. To ensure this, make sure you aren't storing the key on accident (POST request logging, for example).
 
 ## Config
 Configuration is done via environment variables. You can also place an .env in the root and it will be read.
@@ -66,7 +66,7 @@ ANYALOG_SERVE_STATIC_FILES=true
 ```
 
 ### Set up delete job
-Run `yarn run clear-logs` via a every minute to clear expired logs.  
+Run `yarn run clear-logs` every minute to clear expired logs.  
 ##### Crontab:
 ```
 * * * * * yarn --cwd=/path/to/anya-log run clear-logs

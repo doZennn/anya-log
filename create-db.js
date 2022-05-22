@@ -10,7 +10,6 @@ db.prepare(`
     "delkey" VARCHAR(50) NOT NULL,
     "expires" DATETIME NOT NULL,
     "iv" CHAR(64) NOT NULL,
-    "deleted" TINYINT NOT NULL DEFAULT 0,
     PRIMARY KEY ("id")
   );
 `).run();

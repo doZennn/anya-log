@@ -21,9 +21,9 @@ module.exports = async function (fastify) {
       SELECT id
       FROM logs
       WHERE
-        deleted = 0
-        AND id = ?
+        id = ?
         AND delkey = ?
+        AND expires > DATETIME()
     `).get(hashedKey2, splitKeys[1]);
     if (!logDecInfo) {
       return reply.code(404).send(new Error('Invalid delete key.'));

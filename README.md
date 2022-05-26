@@ -1,7 +1,7 @@
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="/public/hero-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="/public/hero-light.png">
-  <img alt="AnyaLog Hero" src="/public/hero-dark.png">
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/doZennn/anya-log/raw/main/public/hero-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/doZennn/anya-log/raw/main/public/hero-light.png">
+  <img alt="AnyaLog Hero" src="https://github.com/doZennn/anya-log/raw/main/public/hero-dark.png">
 </picture>
 
 # AnyaLog

@@ -1,3 +1,9 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="/public/hero-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="/public/hero-light.png">
+  <img alt="AnyaLog Hero" src="/public/hero-dark.png">
+</picture>
+
 # AnyaLog
 Simple and secure key based log upload and retrieval.
 

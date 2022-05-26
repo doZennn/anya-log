@@ -14,12 +14,16 @@ const schema = {
     'HASH_SALT',
     'LOG_EXPIRE_TIME',
     'ANYALOG_SERVE_STATIC_FILES',
-    'ANYALOG_USE_BUILTIN_CRON'
+    'ANYALOG_USE_BUILTIN_CRON',
   ],
   properties: {
     APP_NAME: {
       type: 'string',
       default: 'AnyaLog'
+    },
+    BASE_COLOR: {
+      type: 'string',
+      pattern: '^\\d+, ?\\d+%$'
     },
     HASH_SALT: {
       type: 'string'

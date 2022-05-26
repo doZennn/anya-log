@@ -16,6 +16,7 @@ Configuration is done via environment variables. You can also place an .env in t
 | LOG_EXPIRE_TIME   | Time in seconds for when log files should automatically be deleted.                            | 600                          |
 | MAX_FILES         | Maximum individual files per log.                                                              | 20                           |
 | MAX_FILES_SIZE    | Max total log size in bytes.                                                                   | 5000000                      |
+| BASE_COLOR        | Change main color. Comma separated Hue and Sat.                                                | 356, 70%                     |
 
 
 ## Setup
@@ -82,4 +83,48 @@ ANYALOG_USE_BUILTIN_CRON=true
 ### Start!
 ```
 yarn run start
+```
+
+## API Usage
+
+To upload logs, POST files to `/logs` with a multipart/form-data body. All files must have a file name.  
+Log files will appear in the order you made the formdata request.
+
+A successful response will look like this:
+```json
+{
+  "key": "YCFOAES",
+  "delete_key": "YCFOAES:A1B2C3",
+  "expires": 1653873548
+}
+```
+
+#### Examples
+##### cURL:
+```sh
+curl https://anyalog.test/logs \
+  -F '=@/just/a/logfile/stderr.log' \
+  -F '=@/cool/jayson/asdf.json' \
+  -F '=@/path/to/binaryfile.vdf'
+```
+
+##### Node.js:
+```js
+const someFile = fs.readFileSync('shortcuts.vdf');
+const someFile2 = fs.readFileSync('stderr.log');
+const someString = "Some log as a string";
+
+const fd = new FormData();
+fd.append('files[]', someFile, 'shortcuts.vdf');
+fd.append('files[]', someFile2, 'stderr.log');
+fd.append('asdf', new Blob([someString]), "rawstring.txt");
+
+fetch('https://anyalog.test/logs', {
+  method: 'POST',
+  body: fd
+}).then((res) => {
+  res.json().then((data) => console.info(data));
+}).catch((err) => {
+  console.log(err);
+});
 ```

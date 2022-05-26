@@ -1,14 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><%= appName %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no, user-scalable=no">
+  <title><%= appName %></title>
+  <link rel="icon" href="/logo.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="stylesheet" href="https://unpkg.com/modern-normalize@1.1.0/modern-normalize.css" />
   <link rel="stylesheet" href="/style.css?<%= styleHash %>" />
+  <% if (baseColor) { %>
+    <style>
+      :root {
+        --color-main-hue-sat: <%= baseColor %>;
+      }
+    </style>
+    <meta name="theme-color" content="hsl(<%= baseColor %>, 87%)" />
+  <% } else { %>
+    <meta name="theme-color" content="#efa3a8" />
+  <% } %>
 </head>
 <body>
+  <header id="app-title">
+    <h1><%= appName %></h1>
+    <a href="https://github.com/doZennn/anya-log" id="gh-link">
+      <img src="https://img.shields.io/badge/Powered%20by%20doZennn%5Canya--log-%23efa3a8?logo=github&amp;labelColor=%2324292f" alt="Powered by AnyaLog" />
+    </a>
+  </header>
   <form id="search-log" method="post" autocomplete="off">
     <input type="text" name="log_id" value="" placeholder="Enter key..." />
     <button type="submit"></button>

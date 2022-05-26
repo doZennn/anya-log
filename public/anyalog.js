@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { gunzipSync } from 'https://cdn.skypack.dev/pin/fflate@v0.7.3-x0OS7MYd1pAJyCyfqyxe/mode=imports,min/optimized/fflate.js';
 import untar from 'https://cdn.skypack.dev/pin/js-untar-lhc@v2.1.1-L7n4ZX1UhO8CDpqnZH1i/mode=imports,min/optimized/js-untar-lhc.js';
 import { isBinary } from 'https://cdn.skypack.dev/pin/istextorbinary@v6.0.0-rcru39eisf9dWFZW71DP/mode=imports,min/optimized/istextorbinary.js';

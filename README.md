@@ -5,7 +5,7 @@
 </picture>
 
 # AnyaLog
-Simple and secure key based log upload and retrieval.
+Simple and secure key-based log upload and retrieval.
 
 AnyaLog is designed to keep user logs as secure as possible. You cannot view the uploaded logs without the key that is sent to the user upon upload. Even with access to the database and stored files. To ensure this, make sure you aren't storing the key on accident (POST request logging, for example).
 
